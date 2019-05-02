@@ -4,7 +4,7 @@ class Pregunta{
         this.numAleatorio;
         this.totalPreguntas;
         this.conta = 0;
-        this.contaMaterias;
+        this.contaMaterias = 0;
         this.todasMaterias;
         this.opcMaterias = ["Razonamiento Matematico", "Algebra", "Geometria y Trigonometria", "Geometria Analitica", "Calculo Diferencial e Integral", "Probabilidad y Estadistica", "Produccion Escrita", "Comprension de Textos", "Biologia", "Quimica", "Fisica"];
         this.bande = 0;
@@ -74,7 +74,6 @@ class Pregunta{
         var nodi = this.nodoPregunta;
         var mate = this.materiaSeleccionada;
         var numeroAleatorio = this.numAleatorio;
-        
         jala();
         function jala(){
             firebase.database().ref(nodi+"/"+mate+"/"+numeroAleatorio.toString()).once("value").then(function(snapshot) {
@@ -207,8 +206,8 @@ class Pregunta{
     clickeoSiguiente(){
         var siguiente = document.getElementById("siguiente");
         siguiente.disabled = true;
-        
-        if (this.numAleatorio === this.totalPreguntas) {
+
+        if (parseInt(this.numAleatorio) === parseInt(this.totalPreguntas)) {
             this.numAleatorio = 1;
         } else {
             this.numAleatorio = this.numAleatorio + 1;
@@ -251,17 +250,7 @@ class Pregunta{
         countdownText.style.display = "none";
         
         this.existe = false;
-        this.materiaSeleccionada = "Biologia";
-        this.totalPreguntas = 2;
 
-        if(this.materiaSeleccionada === "todas"){
-            this.todasMaterias = true;
-        }else{
-            this.todasMaterias = false;
-        }
-        
-        this.generarNumAleatorio();
-        
         //---------RECOGIENDO VARIABLES DE DUELO---------
             
             var cadVariables = location.search.substring(1,location.search.length);
@@ -270,7 +259,7 @@ class Pregunta{
             for(var i = 0; i<arrVariables.length; i++){
                 var arrVariableActual = arrVariables[i].split("=");
                 var vari = arrVariableActual[0];
-                var variValor = arrVariableActual[1];
+                var variValor = arrVariableActual[1].replace(/%20/g," ");
                 if(vari === "email"){
                     this.email = variValor;
                 }else
@@ -290,9 +279,21 @@ class Pregunta{
                             }else
                                 if(vari === "tipoDuelo"){
                                     this.tipoDuelo = variValor;
-                                }
+                                }else
+                                    if(vari === "totalHijos"){
+                                        this.totalPreguntas = variValor;
+                                    }else
+                                        if(vari === "materia"){
+                                            this.materiaSeleccionada = variValor;
+                                            if(this.materiaSeleccionada === "todas"){
+                                                this.todasMaterias = true;
+                                            }else{
+                                                this.todasMaterias = false;
+                                            }
+                                        }
             }
         //----------------------------------------------
+        this.generarNumAleatorio();
         this.traePersona();
     }
     
@@ -467,11 +468,8 @@ class Pregunta{
         var nodDuelo = this.nodoDuelos;
         var codDuel = this.codigoDuelo;
         var buen = this.contaBuenas;
-        
-        console.log("BUEN X1 "+buen);
-        
+                
         if(tipTiem === "Uno"){
-            console.log("Buen "+buen);
             firebase.database().ref(nodDuelo+"/"+codDuel+"/totalBuenasUno").set(buen).then(refDoc =>{
                 ganador();
                 console.log("Envio 4 exitoso");
@@ -518,7 +516,6 @@ class Pregunta{
                 if(contaBuenasUnoTxt === undefined ||contaBuenasDosTxt === undefined){
                     msj="Espera...";
                 }else{
-                    console.log("Uno "+contaBuenasUno+"Dos "+contaBuenasDos);
                     if(contaBuenasUno > contaBuenasDos){
                         if(tipPer === "Uno"){
                             msj="Ganaste";
