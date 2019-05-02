@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>INDEX</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="iniciar">
+            <input type="text" id="correo" placeholder="Correo Electronico"/><br>
+            <input type="text" id="contra" placeholder="Contraseña"/><br>
+            <input type="button" id="btnIniciaSesion" value="Iniciar Sesion"/><br>
+            <input type="button" id="btnCierraSesion" value="Cerrar Sesion"/>
+        </div>
+        
+        <!--  FIREBASE  -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para autentificar -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+            <!-- Para database -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+            <!-- Para storage -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-storage.js"></script>
+        <!-- *********  -->
+        
+        <script type="text/javascript" src="js/config/ConfigFirebase.js"></script>
+        <script type="text/javascript" src="js/general.js"></script>
+        <script type="text/javascript" src="js/auth/autentication.js"></script>
+        <script type="text/javascript" src="js/auth/authController.js"></script>
+        
+    </body>
+   
+</html>
