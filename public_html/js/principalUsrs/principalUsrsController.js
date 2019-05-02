@@ -1,8 +1,8 @@
 var objeto= new principalUsrControl();
 
-var btnPregMateria = document.getElementById("btnPregMateria");
 var btnDuelo = document.getElementById("btnDuelo");
-//BOTONES DE LAS MATERIAS
+
+//----------BOTONES DE LAS MATERIAS----------
 var infinito = document.getElementById("infinito");
 var razMatematico = document.getElementById("razMatematico");
 var fisica = document.getElementById("fisica");
@@ -15,10 +15,8 @@ var prodEscrita = document.getElementById("prodEscrita");
 var compreTextos = document.getElementById("compreTextos");
 var biologia = document.getElementById("biologia");
 var quimica = document.getElementById("quimica");
+//--------------------------------------------
 
-btnPregMateria.addEventListener("click", function(){
-    window.location.href = "preguntas.html";
-});
 
 btnDuelo.addEventListener("click", function(){
     window.location.href = "duelo.html";
