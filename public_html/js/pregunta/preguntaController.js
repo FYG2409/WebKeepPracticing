@@ -14,7 +14,7 @@ siguiente.addEventListener("click", function(){
 
 salir.addEventListener("click", function(){
     pregunta.salir();
-    window.location.href = "index.html";
+    window.location.href = "principalUsrs.html";
 });
 
 resA.addEventListener("click", function(){
@@ -51,4 +51,12 @@ function traePer(manda){
 
 function vali(snapshot){
     pregunta.val(snapshot);
+}
+
+function jj(){
+    pregunta.jji();
+}
+
+function guardaDat(){
+    pregunta.guardaDatos();
 }

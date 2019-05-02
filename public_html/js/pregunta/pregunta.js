@@ -3,8 +3,8 @@ class Pregunta{
     constructor(){
         this.numAleatorio;
         this.totalPreguntas;
-        this.conta;
-        this.contaMaterias = 0;
+        this.conta = 0;
+        this.contaMaterias;
         this.todasMaterias;
         this.opcMaterias = ["Razonamiento Matematico", "Algebra", "Geometria y Trigonometria", "Geometria Analitica", "Calculo Diferencial e Integral", "Probabilidad y Estadistica", "Produccion Escrita", "Comprension de Textos", "Biologia", "Quimica", "Fisica"];
         this.bande = 0;
@@ -140,7 +140,6 @@ class Pregunta{
     }
     
     clickeo(tag){
-        console.log("Solucion: "+this.solucion);
         var resA = document.getElementById("resA");
         var resB = document.getElementById("resB");
         var resC = document.getElementById("resC");
@@ -233,12 +232,25 @@ class Pregunta{
     }   
     
     salir(){
-        //AQUI FALTA CODIGO QUE ESTA EN ANDROID
-        guardaRespuestas();
-        this. muestraPopUp("Felicidades...!");
+        if(!(this.codigoDuelo === undefined)){
+            //CUANDO ABANDONAMOS A UN DUELO
+            firebase.database().ref(this.nodoDuelos+"/"+this.codigoDuelo).off();
+            firebase.database().ref(this.nodoDuelos+"/"+this.codigoDuelo).remove().catch(error =>{
+                console.error(error);
+            });
+            alert("Abandonaste la partida");
+        }else{
+            this.guardaRespuestas();
+            this. muestraPopUp("Felicidades...!");
+        }
     }
     
     inicio(){
+        
+        var countdownText = document.getElementById("countdown_text");
+        countdownText.style.display = "none";
+        
+        this.existe = false;
         this.materiaSeleccionada = "Biologia";
         this.totalPreguntas = 2;
 
@@ -254,33 +266,30 @@ class Pregunta{
             
             var cadVariables = location.search.substring(1,location.search.length);
             var arrVariables = cadVariables.split("&");
+            
             for(var i = 0; i<arrVariables.length; i++){
                 var arrVariableActual = arrVariables[i].split("=");
                 var vari = arrVariableActual[0];
                 var variValor = arrVariableActual[1];
-                console.log(vari);
                 if(vari === "email"){
                     this.email = variValor;
-                    console.log("fue email");
                 }else
                     if(vari === "tipoPersona"){
                         this.tipoPersona = variValor;
-                        console.log("fue tipoPersona"+this.tipoPersona);
                     }else
                         if(vari === "numInicio"){
                             this.numInicio = variValor;
-                            console.log("fue numInicio");
                         }else
                             if(vari === "codigoDuelo"){
                                 this.codigoDuelo = variValor;
-                                console.log("fue codigoDuelo");
                                 if((!(this.codigoDuelo === undefined)) && this.tipoDuelo === "contraTiempo"){
+                                    //Si es un duelo
+                                    countdownText.style.display = "block";
                                     this.ponTimer();
                                 }
                             }else
                                 if(vari === "tipoDuelo"){
                                     this.tipoDuelo = variValor;
-                                    console.log("fue tipoDuelo");
                                 }
             }
         //----------------------------------------------
@@ -353,27 +362,38 @@ class Pregunta{
         }
     }
     
+    jji(){
+        this.existe = true;
+    }
+    
     guardaRespuestas(){
+        var ndRespuestas = this.nodoRespuestas;
+        var idPer = this.idPersona;
+        
         if(this.codigoDuelo === undefined){
             if(!(this.todasMaterias)){
                 var nodoMateria = this.materiaSeleccionada.replace(" ","");
                 var nodoTotalMateria = "total"+nodoMateria;
-                if(this.existe){
+                if(this.existe){                    
+                    var cMateria = this.contaMateria;
+                    var cBuenas = this.contaBuenas;
+                    var cMalas = this.contaMalas;
                     
-                    firebase.database().ref(this.nodoRespuestas+"/"+this.idPersona+"/"+nodoTotalMateria).once("value").then(function(snapshot) {
+                    firebase.database().ref(ndRespuestas+"/"+idPer+"/"+nodoTotalMateria).once("value").then(function(snapshot) {
                         if(snapshot.exists()){
-                            this.existe = true;
-                            //Si ya existen respuestas para este usuario
-                            this.contaMateria = parseInt(snapshot.val().toString());
-
-                            firebase.database().ref(this.nodoRespuestas+"/"+this.idPersona+"/"+nodoMateria).set(this.contaMateria+this.contaBuenas).then(refDoc =>{
+                            
+                            jj();
+                            
+                            var cMateriaTotal = parseInt(snapshot.val().toString());
+                            
+                            firebase.database().ref(ndRespuestas+"/"+idPer+"/"+nodoMateria).set(cMateria+cBuenas).then(refDoc =>{
                                 console.log("Envio 1 exitoso");
                             }).catch(error=>{
                                 alert("Error al enviar 1");
                                 console.error(error);
                             });
 
-                            firebase.database().ref(this.nodoRespuestas+"/"+this.idPersona+"/"+nodoTotalMateria).set(this.contaMateriaTotal+this.contaBuenas+this.contaMalas).then(refDoc =>{
+                            firebase.database().ref(ndRespuestas+"/"+idPer+"/"+nodoTotalMateria).set(cMateriaTotal+cBuenas+cMalas).then(refDoc =>{
                                 console.log("Envio 2 exitoso");
                             }).catch(error=>{
                                 alert("Error al enviar 2");
@@ -385,16 +405,16 @@ class Pregunta{
                     }); 
 
                 }else{
-                    firebase.database().ref(this.nodoRespuestas+"/"+this.idPersona+"/"+nodoMateria).set(this.contaBuenas).then(refDoc =>{
+                    var cBuenas = this.contaBuenas;
+                    var cMalas = this.contaMalas;
+                    firebase.database().ref(ndRespuestas+"/"+idPer+"/"+nodoMateria).set(cBuenas).then(refDoc =>{
                         console.log("Envio 3 exitoso");
                     }).catch(error=>{
                         alert("Error al enviar 3");
                         console.error(error);
                     });
-                    
-                    var TotalPreg = this.contaBuenas+this.contaMalas;
-                    
-                    firebase.database().ref(this.nodoRespuestas+"/"+this.idPersona+"/"+nodoTotalMateria).set(this.contaBuenas+this.contaMalas).then(refDoc =>{
+                                        
+                    firebase.database().ref(ndRespuestas+"/"+idPer+"/"+nodoTotalMateria).set(cBuenas+cMalas).then(refDoc =>{
                         console.log("Envio 3 exitoso");
                     }).catch(error=>{
                         alert("Error al enviar 3");
@@ -414,15 +434,14 @@ class Pregunta{
     ponTimer(){
         document.getElementById("countdown_text").style.visibility = "visible";
         this.escuchaDuelo();
-        console.log("Hola tipo "+this.tipoPersona);
-        var tipTiem = this.tipoPersona;
         var nodDuelo = this.nodoDuelos;
         var codDuel = this.codigoDuelo;
-        var buen = this.contaBuenas;
         
         //Iniciando timer
         var myVar = setInterval(myTimer, 1000);
         var contador = 0;
+        
+        
         function myTimer() {
             var valorSegundosTxt = document.getElementById("countdown_text").value;
             if(this.conta === 1){
@@ -431,50 +450,58 @@ class Pregunta{
             }
             if(parseInt(valorSegundosTxt) === 10){//tiempo en segundos
                 //AQUI TERMINA EL TIEMPO
+                firebase.database().ref(nodDuelo+"/"+codDuel).off();
                 
-                firebase.database().ref(this.nodoDuelos+"/"+this.codigoDuelo).off();
-                
-                console.log("Termino el tiempo " +tipTiem);
                 clearInterval(myVar);
-                console.log("nodo "+nodDuelo);
                 //------------------------
-                if(tipTiem === "Uno"){
-                    firebase.database().ref(nodDuelo+"/"+codDuel+"/totalBuenasUno").set(buen).then(refDoc =>{
-                        ganador();
-                        console.log("Envio 4 exitoso");
-                    }).catch(error=>{
-                        alert("Error al enviar 4");
-                        console.error(error);
-                    });
-                }else
-                    if(tipTiem === "Dos"){
-                        firebase.database().ref(nodDuelo+"/"+codDuel+"/totalBuenasDos").set(buen).then(refDoc =>{
-                            ganador();
-                            console.log("Envio 5 exitoso");
-                        }).catch(error=>{
-                            alert("Error al enviar 5");
-                            console.error(error);
-                        });
-                    }
+                guardaDat();
 
-                
             }else{
                 document.getElementById("countdown_text").value = contador++;
             }
         }
     }
     
-   verGanador(){
+    guardaDatos(){
+        var tipTiem = this.tipoPersona;
+        var nodDuelo = this.nodoDuelos;
+        var codDuel = this.codigoDuelo;
+        var buen = this.contaBuenas;
+        
+        console.log("BUEN X1 "+buen);
+        
+        if(tipTiem === "Uno"){
+            console.log("Buen "+buen);
+            firebase.database().ref(nodDuelo+"/"+codDuel+"/totalBuenasUno").set(buen).then(refDoc =>{
+                ganador();
+                console.log("Envio 4 exitoso");
+            }).catch(error=>{
+                alert("Error al enviar 4");
+                console.error(error);
+            });
+        }else
+            if(tipTiem === "Dos"){
+                firebase.database().ref(nodDuelo+"/"+codDuel+"/totalBuenasDos").set(buen).then(refDoc =>{
+                    ganador();
+                    console.log("Envio 5 exitoso");
+                }).catch(error=>{
+                    alert("Error al enviar 5");
+                    console.error(error);
+                });
+            }
+    }
+    
+    verGanador(){
         //-----TRAYENDO GANADOR Y PERDEDOR
         var nodDuel = this.nodoDuelos;
         var codDuel = this.codigoDuelo;
         var tipPer = this.tipoPersona;
+        var cBuenas = this.contaBuenas;
+        var cMalas = this.contaMalas;
         firebase.database().ref(this.nodoDuelos+"/"+this.codigoDuelo).on("value", function(querySnapshot){
             if(querySnapshot.exists()){
                 //Si existe el codigo
                 var duelo = querySnapshot.val();
-                console.log("Duelo");
-                console.log(duelo);
                 var contaBuenasUno = duelo.totalBuenasUno;
                 var contaBuenasDos = duelo.totalBuenasDos;
                 
@@ -491,6 +518,7 @@ class Pregunta{
                 if(contaBuenasUnoTxt === undefined ||contaBuenasDosTxt === undefined){
                     msj="Espera...";
                 }else{
+                    console.log("Uno "+contaBuenasUno+"Dos "+contaBuenasDos);
                     if(contaBuenasUno > contaBuenasDos){
                         if(tipPer === "Uno"){
                             msj="Ganaste";
@@ -516,7 +544,7 @@ class Pregunta{
                     });
                 }
                 window.location.href = "principalUsrs.html";
-                alert(msj);
+                alert("Buenas: "+cBuenas+" Malas: "+cMalas+" Mensaje: "+msj);
             }
         }, function (errorObject) {
             console.error(errorObject.code);

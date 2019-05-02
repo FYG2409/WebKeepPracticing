@@ -85,7 +85,6 @@ class Duelo{
             tipoDuelo: this.tipoDuelo,
             totalPreguntas: parseFloat(this.totalPreguntas)
         };
-        console.log(dueloObj);
         firebase.database().ref(this.nodoDuelos+"/"+this.codigoDuelo).set(dueloObj).then(refDoc =>{
             console.log("Registro Exitoso");
         }).catch(error=>{
@@ -94,17 +93,13 @@ class Duelo{
         });
         
         firebase.database().ref(this.nodoDuelos+"/"+this.codigoDuelo).on("value", function(querySnapshot) {
-            console.log("Entre");
             if(querySnapshot.exists()){
                 //Si existe el codigo
-                console.log("Existe el codigo");
                 var duelo = querySnapshot.val();
                 if(duelo.correoPerDos === undefined){
                     //LA SEGUNDA PERSONA ESTA DISPONIBLE
                     document.getElementById("tvEsperandoOponente").value="Esperado...";
-                    console.log("La segunda persona esta disponible");
                 }else{
-                    console.log("La segunda persona ya no esta disponible");
                     ffm();
                     
                     /*
@@ -189,17 +184,12 @@ class Duelo{
     }
     
     mm(existe, materia, numHijos){
-        console.log("Hijos"+numHijos);
         if(existe === true){
             this.totalPreguntas = numHijos;
-            console.log("Existo "+materia+" Tam "+this.totalPreguntas);
         }else{
-            
             //Si aun no hay registros para esa materia
             this.totalPreguntas = 0;
-            console.log("No existo "+materia+" Tam "+this.totalPreguntas);
         }
-        console.log("Y "+this.totalPreguntas);
         this.totales[this.conta] = this.totalPreguntas;
         this.conta = this.conta + 1;
         if(this.conta === 11){
@@ -214,14 +204,11 @@ class Duelo{
                         this.totalPreguntas = this.totales[i];
                     }
             }
-            console.log("Totales: "+this.totalPreguntas);
             if(this.totalPreguntas === 0){
                 alert("Lo sentimos aun no tenemos preguntas para todas las materias");
             }else{
                 //GENERANDO NUM ALEATORIO
-                console.log("Total"+this.totalPreguntas);
                 this.numeroAleatorio = Math.floor(((Math.random() * this.totalPreguntas) + 1));
-                console.log("Aleatorio: "+this.numeroAleatorio);
                 this.validandoCodigoPerUno();
             }
         }
@@ -230,7 +217,6 @@ class Duelo{
     numAleatorio(){
         this.tipoDuelo = "contraTiempo";
         this.conta = 0;
-        console.log("contador: "+this.conta);
         this.valida("Razonamiento Matematico");
         this.valida("Algebra");
         this.valida("Geometria y Trigonometria");
