@@ -12,6 +12,20 @@
             <input type="button" id="btnIniciaSesion" value="Iniciar Sesion"/><br>
             <input type="button" id="btnCierraSesion" value="Cerrar Sesion"/>
         </div>
+        <div id="botones">
+            
+            <input type="button" id="btnRegPregunta" value="Registra Pregunta"/>
+            
+        </div>
+        
+        <script>
+            var btnRegPregunta = document.getElementById("btnRegPregunta");
+            btnRegPregunta.addEventListener("click", function(){
+               window.location.href = "html/registroPregunta.html"; 
+            });
+        </script>
+        
+        
         
         <!--  FIREBASE  -->
             <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>

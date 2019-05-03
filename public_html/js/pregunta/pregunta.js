@@ -101,38 +101,37 @@ class Pregunta{
         
         
         //Validando si existan imagenes
-
         if(!(this.preguntaObj.preguntaImg === undefined)){
             this.traeImagen(this.preguntaObj.preguntaImg, 1, this.nodoPreguntasImg);
-            document.getElementById("imgPregunta").style.visibility = "visible";
+            document.getElementById("imgPregunta").style.display = "block";
         }else{
             document.getElementById("imgPregunta").style.display = "none";
         }
 
         if(!(this.preguntaObj.rAImg === undefined)){
             this.traeImagen(this.preguntaObj.rAImg, 2, this.nodoRespuestasImg);
-            document.getElementById("imgRa").style.visibility = "visible";
+            document.getElementById("imgRa").style.display = "block";
         }else {
             document.getElementById("imgRa").style.display = "none";
         }
 
         if(!(this.preguntaObj.rBImg === undefined)){
             this.traeImagen(this.preguntaObj.rBImg, 3, this.nodoRespuestasImg);
-            document.getElementById("imgRb").style.visibility = "visible";
+            document.getElementById("imgRb").style.display = "block";
         }else {
             document.getElementById("imgRb").style.display = "none";
         }
 
         if(!(this.preguntaObj.rCImg === undefined)){
             this.traeImagen(this.preguntaObj.rCImg, 4, this.nodoRespuestasImg);
-            document.getElementById("imgRc").style.visibility = "visible";
+            document.getElementById("imgRc").style.display = "block";
         }else {
             document.getElementById("imgRc").style.display = "none";
         }
 
         if(!(this.preguntaObj.rDImg === undefined)){
             this.traeImagen(this.preguntaObj.rDImg, 5, this.nodoRespuestasImg);
-            document.getElementById("imgRd").style.visibility = "visible";
+            document.getElementById("imgRd").style.display = "block";
         }else {
             document.getElementById("imgRd").style.display = "none";
         }
@@ -433,7 +432,7 @@ class Pregunta{
     //-------PARA TIMER------------
 
     ponTimer(){
-        document.getElementById("countdown_text").style.visibility = "visible";
+        document.getElementById("countdown_text").style.display = "block";
         this.escuchaDuelo();
         var nodDuelo = this.nodoDuelos;
         var codDuel = this.codigoDuelo;
