@@ -9,32 +9,40 @@ function IniciarSesion()
     else
     {
         firebase.auth().signInWithEmailAndPassword(Email, Contr).then
-        (
-            result =>
-            {
-                alert("INICIO DE SESISION EXITOSO");
-                var user = firebase.auth().currentUser;
-                var Verificado = user.emailVerified;
-                if(Verificado === true)
-                {
-                    window.location.href = "Menu.html";
-                }
-                else
-                {
-                    alert("VERIFICA TU CORREO POR FAVOR")
-                }
-                
-            }
-        )
-        .catch
-        (   error =>
-            {
-                alert("HA OCURRIDO UN ERROR " + error);
+                (
+                    result =>
+                    {
+                        alert("INICIO DE SESISION EXITOSO");
+                        var user = firebase.auth().currentUser;
+                        var Verificado = user.emailVerified;
+                        if(Verificado === true)
+                        {
+                            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(
+                            function() 
+                            {
+                                window.location.href = "Menu.html";
+                                return firebase.auth().signInWithEmailAndPassword(Email, Contr);
+                            })
+                            .catch(function(error) 
+                            {
+                                var errorCode = error.code;
+                                var errorMessage= error.message;
+                            });
+                        }
+                        else
+                        {
+                            alert("VERIFICA TU CORREO POR FAVOR")
+                        }
+                    }
+                ).catch
+                (  
+                    error =>
+                    {
+                        alert("HA OCURRIDO UN ERROR " + error);
                    
-            }
-        );
+                    }
+                );
     }
-                
 }
 
 function CerrarSesion()
@@ -94,4 +102,3 @@ function VerSesionAbi()
     }
     
 }
-

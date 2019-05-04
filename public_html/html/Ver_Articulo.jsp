@@ -6,14 +6,13 @@
     </head>
     <body>
         <%
-            String Materia = request.getParameter("Mat"); 
-            String Tema = request.getParameter("Tem");
-            String Desc = request.getParameter("Des");
-            String Ejemp = request.getParameter("Eje");
+            String Materia = request.getParameter("Mate"); 
+            String Tema = request.getParameter("Tema");
+            String Desc = request.getParameter("Desc");
+            String Ejemp = request.getParameter("Ejem");
             out.println(Tema);
             out.println(Materia);
             out.println(Desc);
-        
         %>
     </body>
 </html>

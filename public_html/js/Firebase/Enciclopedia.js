@@ -17,10 +17,10 @@ function Desplegar()
                         "<form method='post' action='Ver_Articulo.jsp'>" +
                         "<table>"+
                         "<tr>"+
-                                "<td>"+ "<input name='Mat' type='text' size= '20' style = 'background-color: #fffff; border: 0;' readonly value='"+ datoa.materia +"'>"+"</td>"+
-                                "<td>"+ "<input name='Tem' type='text' size= '20' style = 'background-color: #fffff; border: 0;' readonly value='"+ datoa.tema +"'>" + "</td>"+
-                                "<td>"+ "<input name='Des' type='text' size= '1' style = 'visibility:hidden' readonly value='"+datoa.descripcion+"'>" + 
-                                        "<input name='Eje' type='text' size= '1' style = 'visibility:hidden' readonly value='"+datoa.ejemplo+"'>" +
+                                "<td>"+ "<input name='Mate' type='text' size= '20' style = 'background-color: #fffff; border: 0;' readonly value='"+ datoa.materia +"'>"+"</td>"+
+                                "<td>"+ "<input name='Tema' type='text' size= '20' style = 'background-color: #fffff; border: 0;' readonly value='"+ datoa.tema +"'>" + "</td>"+
+                                "<td>"+ "<input name='Desc' type='text' size= '1' style = 'visibility:hidden' readonly value='"+datoa.descripcion+"'>" + 
+                                        "<input name='Ejem' type='text' size= '1' style = 'visibility:hidden' readonly value='"+datoa.ejemplo+"'>" +
                                         "<br><center><input type='submit' value='Ver'><center><br>" +
                                 "</td>"+
                         "</tr>"
