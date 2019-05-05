@@ -2,11 +2,14 @@ function Validaciones()
 {
     var Usua = document.getElementById("Usu").value;
     var Email = document.getElementById("Ema").value;
-    var Escue = document.getElementById("Esc").value;
-    var Carre = document.getElementById("Carr").value;
+    var Select2 = document.getElementById("Esc");
+    var Escue = Select2.options[Select2.selectedIndex].value;;
     var Cont1 = document.getElementById("Con1").value;
     var Cont2 = document.getElementById("Con2").value;
-    if(Usua === "" || Email === "" || Escue === "" || Carre === "" || Cont1 === "" || Cont2==="") 
+    var Select = document.getElementById("Carre");
+    var Carre = Select.options[Select.selectedIndex].value;
+    
+    if(Usua === "" || Email === "" || Escue === "Seleccione una Opcion" || Carre === "Seleccione una Opcion" || Cont1 === "" || Cont2==="") 
     {
         alert("Debes llenar todos los campos");
     }
@@ -19,8 +22,10 @@ function Validaciones()
 function Registrar( Ema, Con1)
 {
     var Usua = document.getElementById("Usu").value;
-    var Escue = document.getElementById("Esc").value;
-    var Carre = document.getElementById("Carr").value;
+    var Select2 = document.getElementById("Esc");
+    var Escue = Select2.options[Select2.selectedIndex].value;
+    var Select = document.getElementById("Carre");
+    var Carre = Select.options[Select.selectedIndex].value;
     
             firebase.auth().createUserWithEmailAndPassword(Ema, Con1).then
             (
@@ -55,8 +60,10 @@ function Registro_2(ID , User)
 {
     var Usua = document.getElementById("Usu").value;
     var Email = document.getElementById("Ema").value;
-    var Escue = document.getElementById("Esc").value;
-    var Carre = document.getElementById("Carr").value;
+    var Select2 = document.getElementById("Esc");
+    var Escue = Select2.options[Select2.selectedIndex].value;;
+    var Select = document.getElementById("Carre");
+    var Carre = Select.options[Select.selectedIndex].value;
     var Cont1 = document.getElementById("Con1").value;
     var Cont2 = document.getElementById("Con2").value;
     
@@ -120,7 +127,10 @@ function Traer_Per()
                                 "<P>NOMBRE:" +Per.nickName +"</P>" + 
                                 "<P>EMAIL:" +Per.email +"</P>" + 
                                 "<P>ESCUELA ACTUAL:" +Per.escActual + "</P>" +
-                                "<P>ESCUELA INGRESAR:" +Per.escingresar + "</P>";
+                                "<P>ESCUELA INGRESAR:" +Per.escingresar + "</P>" +
+                                "<input id='email' type='text' size= '1' style = 'visibility:hidden' readonly='true' value='"+Per.email+"'>" 
+                        ;
+                        
                         Div.innerHTML=Canvas;
                         GraficasBarra();
                     }
@@ -143,12 +153,17 @@ function Traer_Per()
     );
 }
 ///FALLA MODIFICAR CONTRA
+
 function ModificaPer()
 {
     var Usua = document.getElementById("Usu").value;
-    var Escue = document.getElementById("Esc").value;
-    var Carre = document.getElementById("Carr").value;
+    var Select2 = document.getElementById("Esc");
+    var Escue = Select2.options[Select2.selectedIndex].value;;
+    var Select = document.getElementById("Carre");
+    var Carre = Select.options[Select.selectedIndex].value;
     var Cont1 = document.getElementById("Con1").value;
+    var ContA = document.getElementById("ConA").value;
+    var Email = document.getElementById("email").value;
     
     firebase.auth().onAuthStateChanged
     (
@@ -156,30 +171,20 @@ function ModificaPer()
         {
             if (user) 
             {  
+                
                 if(Usua !== "")
                 {
                     firebase.database().ref("Personas/" + user.uid + "/nickName").set(Usua);
                 }
-                if(Escue !== "")
+                if(Escue !== "Seleccione una Opcion")
                 {
                     firebase.database().ref("Personas/" + user.uid + "/escActual").set(Escue);
                 }
-                if(Carre !== "")
+                if(Carre !== "Seleccione una Opcion")
                 {
                     firebase.database().ref("Personas/" + user.uid + "/escingresar").set(Carre);
                 }
-                if(Cont1 !== "")
-                {
-                    user.updatePassword(Cont1).then(
-                        function() 
-                        {
-                            firebase.database().ref("Personas/" + user.uid + "/contra").set(Cont1);
-                        }).catch(
-                                function(error) 
-                        {
-                            alert("Lamentablemente no pudimos cambiar la contraseña: " +error);
-                        });
-                }
+                
                 alert("Los cambios se han realizado");
                 window.location.href = "ModificarPer.html";
             } 
@@ -291,21 +296,44 @@ function Eliminar()
         {
             if (user) 
             {   
+                firebase.database().ref("Personas/" + user.uid + "/nickName").set(null);
+                firebase.database().ref("Personas/" + user.uid + "/escActual").set(null);
+                firebase.database().ref("Personas/" + user.uid + "/escingresar").set(null);
+                firebase.database().ref("Personas/" + user.uid + "/contra").set(null);
+                firebase.database().ref("Personas/" + user.uid + "/email").set(null);
+                firebase.database().ref("Personas/" + user.uid + "/idPersona").set(null);
+                firebase.database().ref("Personas/" + user.uid).set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/RazonamientoMatematico").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/Algebra").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/GeometriayTrigonometria").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/GeometriaAnalitica").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/CalculoDiferencialeIntegral").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/ProbabilidadyEstadistica").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/ProduccionEscrita").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/ComprensiondeTextos").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/Biologia").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/Quimica").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/Fisica").set(null);
+                
+                firebase.database().ref("Respuestas/" + user.uid + "/totalRazonamientoMatematico").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalAlgebra").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalGeometriayTrigonometria").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalGeometriaAnalitica").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalCalculoDiferencialeIntegral").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalProbabilidadyEstadistica").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalProduccionEscrita").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalComprensiondeTextos").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalBiologia").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalQuimica").set(null);
+                firebase.database().ref("Respuestas/" + user.uid + "/totalFisica").set(null);
+                
+                firebase.database().ref("Respuestas/" + user.uid).set(null);
+                
                 firebase.auth().signInWithEmailAndPassword(Email, Contr).then
                 (
                     result =>
                     {
                         var User = firebase.auth().currentUser;
-                        var ID= User.uid;
-                        firebase.database().ref("Respuestas/" + ID).remove().then(function() 
-                        {
-                            alert("Respuesta Eliminada");
-                            
-                        }).catch(function(error) 
-                        {
-                            alert("A ocurrido un error: " + error);
-                        });
-                        firebase.database().ref("Personas/" + ID).remove();
                         User.delete().then(function() 
                         {
                             alert("El Usuario ha sido eliminado");
@@ -315,7 +343,15 @@ function Eliminar()
                             alert("A ocurrido un error: " + error);
                         });
                     }
+                ).catch
+                (  
+                    error =>
+                    {
+                        alert("HA OCURRIDO UN ERROR " + error);
+                   
+                    }
                 );
+                
             } 
             else 
             {
@@ -324,4 +360,23 @@ function Eliminar()
             }
         }
     );
+}
+
+function RestableCont()
+{
+    var Email = document.getElementById("email").value;
+     auth.sendPasswordResetEmail(Email).then
+        (   function() 
+            {
+                alert("Revisa tu correo ahi podras cambiar tu contraseña");
+            
+            }
+        ).catch
+        (
+            function(error)
+            {
+                alert("Ocurrio un error: " + error);
+            }
+        );
+    
 }

@@ -13,6 +13,7 @@
             out.println(Tema);
             out.println(Materia);
             out.println(Desc);
+            out.println(Ejemp);
         %>
     </body>
 </html>

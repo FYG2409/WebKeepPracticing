@@ -100,5 +100,43 @@ function VerSesionAbi()
         alert("Usted Ya A Iniciado Sesion");
        window.location.href = "Menu.html";
     }
-    
+}
+
+function ReenviarCorreo()
+{
+    var Email = document.getElementById("Email").value;
+    var Contr = document.getElementById("Contra").value;
+    if(Email === "" || Contr === "")
+    {
+        alert("Llena todos los campos");
+    }
+    else
+    {
+        firebase.auth().signInWithEmailAndPassword(Email, Contr).then
+                (
+                    result =>
+                    {
+                        var user = firebase.auth().currentUser;
+                        user.sendEmailVerification().then(function() 
+                        {
+                            alert("SE HA ENVIADO EL CORREO DE AUTENTIFICACION");
+                            firebase.auth().signOut().then(() =>{
+                            window.location.href = "../index.html";
+                            }).catch(error =>{
+                            alert("Ha ocurrido un error " + error);
+                            });
+                        }).catch(function(error) 
+                        {
+                            alert(error);
+                        });
+                    }
+                ).catch
+                (  
+                    error =>
+                    {
+                        alert("HA OCURRIDO UN ERROR " + error);
+                   
+                    }
+                );
+    }
 }
