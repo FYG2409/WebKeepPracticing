@@ -99,3 +99,50 @@ function CorreoAu(user)
     });
 
 }
+
+function Traer_Per()
+{
+    firebase.auth().onAuthStateChanged
+    (
+        function(user) 
+        {
+            if (user) 
+            {   
+                firebase.database().ref("Personas/" + user.uid).on("value", 
+                function(querySnapshot) 
+                {
+                    var Per= querySnapshot.val();
+                    if(querySnapshot.exists())
+                    {
+                        var Div = document.getElementById("Persona");
+                        Div.innerHTML="";
+                        var Canvas=
+                                "<P>NOMBRE:" +Per.nickName +"</P>" + 
+                                "<P>EMAIL:" +Per.email +"</P>" + 
+                                "<P>ESCUELA ACTUAL:" +Per.escActual + "</P>" +
+                                "<P>ESCUELA INGRESAR:" +Per.escingresar + "</P>";
+                        Div.innerHTML=Canvas;
+                        GraficasBarra();
+                    }
+                    else
+                    {
+                        alert("HA HABIDO UN ERROR");
+                    }
+                }, 
+                function (errorObject) 
+                {
+                    console.error(errorObject.code);
+                });
+            } 
+            else 
+            {
+                alert("La sesion a caducado");
+                window.location.href = "../index.html";
+            }
+        }
+    );
+}
+
+
+
+    
