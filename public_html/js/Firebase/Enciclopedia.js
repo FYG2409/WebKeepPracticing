@@ -19,7 +19,7 @@ function Desplegar()
                         "<tr>"+
                                 "<td>"+ "<input name='Mate' type='text' size= '20' style = 'background-color: #fffff; border: 0;' readonly value='"+ datoa.materia +"'>"+"</td>"+
                                 "<td>"+ "<input name='Tema' type='text' size= '20' style = 'background-color: #fffff; border: 0;' readonly value='"+ datoa.tema +"'>" + "</td>"+
-                                "<td>"+ "<button value='"+ID+"' class='ID'>Ver Value</button><br>" +
+                                "<td>"+ "<button value='"+ID+"' class='ID'>Leer Articulo</button><br>" +
                                 "</td>"+
                         "</tr>"
                         + "</table>";
@@ -27,15 +27,7 @@ function Desplegar()
             }
                 
         );
-        //for(var key in datos)
-        //{
-          //  filasAMostrar+="<tr>"+
-             //                   "<td>"+ datos[key].materia +"</td>"+
-               //                 "<td>"+ datos[key].tema +"</td>"+
-                 //               "<td>"+ datos[key].descripcion +"</td>"+
-                   //             "<td>"+ datos[key].ejemplo +"</td>"+
-                     //      "</tr>";
-        //}
+        
         tBodyEnci.innerHTML = filasAMostrar;
         
         $(function() 
