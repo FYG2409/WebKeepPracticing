@@ -19,6 +19,7 @@
         <script src="../js/Firebase/Graficas.js" type="text/javascript"></script>
         <script src="../js/Firebase/Persona.js" type="text/javascript"></script>
         <script src="../js/Firebase/Conexion.js" type="text/javascript"></script>
+        <script src="../js/Firebase/Ranking.js" type="text/javascript"></script>
         <style>
             #Graficas{ 
                 width: 600px; 
@@ -26,8 +27,9 @@
             } 
         </style>
     </head>
-    <body onload="Traer_Per()">
+    <body onload="Traer_Per() ,NickEscPer()">
         <div id="Persona"></div>
+        <div id="Ranking"></div>
         <div id="Botones">
             <button onclick="location.href='ModificarPer.html'">Modificar Datos</button><br>
             <button onclick="location.href='EliminarPer.html'">Eliminar Cuenta</button><br>

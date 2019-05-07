@@ -135,7 +135,6 @@ function ReenviarCorreo()
                     error =>
                     {
                         alert("HA OCURRIDO UN ERROR " + error);
-                   
                     }
                 );
     }
