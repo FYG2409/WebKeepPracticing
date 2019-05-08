@@ -81,3 +81,49 @@ function Limpiar()
     var Div = document.getElementById("desp");
     Div.innerHTML="";
 }
+
+function EnciMenu()
+{
+    var tEnciM=document.getElementById("enciM");
+    var id=new Array();
+    var tema=new Array();
+    var materia=new Array();
+    var descrip=new Array();
+    var ejemplo=new Array();
+    var reference= firebase.database().ref("Enciclopedia");
+    reference.on("value",function(snap)
+    {
+        if(snap.exists())
+        {
+            var datos=snap.val();
+            var filasAMostra="";
+
+            snap.forEach
+            (
+               (dato)=>
+                {
+                    var ID= dato.key;
+                    var datoa = dato.val();
+                    id.push(ID);
+                    tema.push(datoa.tema);
+                    materia.push(datoa.materia);
+                    descrip.push(datoa.descripcion);
+                    ejemplo.push(datoa.ejemplo);         
+                }
+            );
+            var m=id.length;
+            var N=getRandomInt(m);
+            
+            filasAMostra+="<p>"+tema[N]+"</p>" +
+                          "<p>"+materia[N]+"</p>" +
+                          "<p>"+descrip[N]+"</p>" +
+                          "<p>"+ejemplo[N]+"</p>" ;
+                    
+           tEnciM.innerHTML = filasAMostra;  
+        } 
+    });
+    
+}
+function getRandomInt(tot) {
+  return Math.floor(Math.random() * (tot));
+}
